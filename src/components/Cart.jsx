@@ -7,6 +7,8 @@ import Divider from "@mui/material/Divider";
 import ClearIcon from "@mui/icons-material/Clear";
 import IconButton from "@mui/material/IconButton";
 import { CartList } from "./CartList";
+import { useContext } from "react";
+import { ShopContext } from "../context/ShopContext";
 
 const style = {
 	position: "absolute",
@@ -22,21 +24,21 @@ const style = {
 	p: 2,
 };
 
-export const Cart = (props) => {
+export const Cart = () => {
 	const {
-		isOpen,
-		setIsOpen,
-		orderedItems = [],
-		onRemove,
-		onIncreaseQtv,
-		onDecreaseQtv,
-	} = props;
+		toggleCart,
+		showCart,
+		orderedItems,
+		removeOrderedItem,
+		increaseQuantity,
+		decreaseQuantity,
+	} = useContext(ShopContext);
 
 	return (
 		<div>
 			<Modal
-				open={isOpen}
-				onClose={setIsOpen}
+				open={showCart}
+				onClose={toggleCart}
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
 			>
@@ -54,7 +56,7 @@ export const Cart = (props) => {
 						>
 							Shopping Cart
 						</Typography>
-						<IconButton onClick={setIsOpen}>
+						<IconButton onClick={toggleCart}>
 							<ClearIcon />
 						</IconButton>
 					</Box>
@@ -63,9 +65,9 @@ export const Cart = (props) => {
 					{orderedItems.length ? (
 						<CartList
 							orderedItems={orderedItems}
-							onRemove={onRemove}
-							onIncreaseQtv={onIncreaseQtv}
-							onDecreaseQtv={onDecreaseQtv}
+							onRemove={removeOrderedItem}
+							onIncreaseQtv={increaseQuantity}
+							onDecreaseQtv={decreaseQuantity}
 						/>
 					) : (
 						<Typography

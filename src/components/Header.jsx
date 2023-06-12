@@ -1,17 +1,17 @@
 import * as React from "react";
-
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-
 import Badge from "@mui/material/Badge";
-
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useContext } from "react";
+import { ShopContext } from "../context/ShopContext";
 
 export const Header = (props) => {
-	const { orderedItems, setIsOpen } = props;
+	const { toggleCart, orderedItems } = useContext(ShopContext);
+
 	const badgeContent = orderedItems.reduce(
 		(acc, item) => acc + item.quantity,
 		0
@@ -31,7 +31,7 @@ export const Header = (props) => {
 					</Typography>
 
 					<Box sx={{ flexGrow: 1 }} />
-					<Box onClick={setIsOpen}>
+					<Box onClick={toggleCart}>
 						<IconButton color="inherit">
 							<Badge badgeContent={badgeContent} color="error">
 								<ShoppingCartIcon />

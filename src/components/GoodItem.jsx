@@ -7,9 +7,10 @@ import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
 import { Box } from "@mui/material";
 
-export const GoodItem = ({ good, addToOrder }) => {
+export const GoodItem = ({ good, addToOrder, setMessage }) => {
 	const handleClick = (id, name, price) => {
 		addToOrder(id, name, price);
+		setMessage(`${name} added to cart`);
 	};
 
 	return (
