@@ -5,16 +5,33 @@ import { Button, Typography } from "@mui/material";
 import { CartListItem } from "./CartListItem";
 import { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
+import { useCallback } from "react";
 
 export const CartList = (props) => {
-	const { orderedItems, onRemove, onIncreaseQtv, onDecreaseQtv } = props;
-	const itemsQtv = orderedItems.reduce((acc, item) => acc + item.quantity, 0);
-	const totalPrice = orderedItems.reduce((acc, item) => acc + item.price, 0);
+	const { orderedItems } = props;
+	const {
+		setMessage,
+		toggleCart,
+		sendOrder,
+		increaseQuantity,
+		decreaseQuantity,
+		removeOrderedItem,
+	} = useContext(ShopContext);
 
-	const { setMessage, toggleCart } = useContext(ShopContext);
+	const itemsQtv = orderedItems.reduce((acc, item) => acc + item.quantity, 0);
+
+	const totalPrice = useCallback(
+		(orderedItems) => {
+			let sum = 0;
+			orderedItems.forEach((item) => (sum += item.price * item.quantity));
+			return sum;
+		},
+		[orderedItems]
+	);
 
 	const onOrderButtonHandler = () => {
 		setMessage("Order sent!");
+		sendOrder();
 		toggleCart();
 	};
 
@@ -25,9 +42,9 @@ export const CartList = (props) => {
 					<CartListItem
 						key={item.id}
 						orderedItem={item}
-						onRemove={onRemove}
-						onIncreaseQtv={onIncreaseQtv}
-						onDecreaseQtv={onDecreaseQtv}
+						onRemove={removeOrderedItem}
+						onIncreaseQtv={increaseQuantity}
+						onDecreaseQtv={decreaseQuantity}
 					/>
 				))}
 			</List>
@@ -39,7 +56,8 @@ export const CartList = (props) => {
 				}}
 			>
 				<Typography>
-					Subtotal {`(${itemsQtv} items): ${totalPrice * itemsQtv}€`}
+					Subtotal{" "}
+					{`(${itemsQtv} items): ${totalPrice(orderedItems)}€`}
 				</Typography>
 				<Button
 					onClick={onOrderButtonHandler}

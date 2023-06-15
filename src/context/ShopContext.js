@@ -4,7 +4,7 @@ import { ShopReducer } from "../reducer/ShopReducer";
 const initState = {
 	goods: [],
 	orderedItems: [],
-	showCart: false,
+	isShowCart: false,
 	loading: false,
 	alertMessage: "",
 };
@@ -42,6 +42,10 @@ export const ShopContextProvider = ({ children }) => {
 
 	context.setLoading = (status) => {
 		dispatch({ type: "SET_LOADING", payload: status });
+	};
+
+	context.sendOrder = (data = []) => {
+		dispatch({ type: "SEND_ORDER", payload: data });
 	};
 
 	return (

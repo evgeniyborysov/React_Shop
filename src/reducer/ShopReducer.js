@@ -65,13 +65,16 @@ export const ShopReducer = (state, action) => {
 			};
 		}
 		case "TOGGLE_CART": {
-			return { ...state, showCart: !state.showCart };
+			return { ...state, isShowCart: !state.isShowCart };
 		}
 		case "SET_MESSAGE": {
 			return { ...state, alertMessage: action.payload };
 		}
 		case "SET_LOADING": {
 			return { ...state, loading: action.payload };
+		}
+		case "SEND_ORDER": {
+			return { ...state, orderedItems: action.payload };
 		}
 
 		default:

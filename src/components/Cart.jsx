@@ -25,19 +25,12 @@ const style = {
 };
 
 export const Cart = () => {
-	const {
-		toggleCart,
-		showCart,
-		orderedItems,
-		removeOrderedItem,
-		increaseQuantity,
-		decreaseQuantity,
-	} = useContext(ShopContext);
+	const { toggleCart, isShowCart, orderedItems } = useContext(ShopContext);
 
 	return (
 		<div>
 			<Modal
-				open={showCart}
+				open={isShowCart}
 				onClose={toggleCart}
 				aria-labelledby="modal-modal-title"
 				aria-describedby="modal-modal-description"
@@ -63,12 +56,7 @@ export const Cart = () => {
 
 					<Divider />
 					{orderedItems.length ? (
-						<CartList
-							orderedItems={orderedItems}
-							onRemove={removeOrderedItem}
-							onIncreaseQtv={increaseQuantity}
-							onDecreaseQtv={decreaseQuantity}
-						/>
+						<CartList orderedItems={orderedItems} />
 					) : (
 						<Typography
 							id="modal-modal-description"
