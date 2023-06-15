@@ -5,7 +5,7 @@ import { Button, Typography } from "@mui/material";
 import { CartListItem } from "./CartListItem";
 import { useContext } from "react";
 import { ShopContext } from "../context/ShopContext";
-import { useCallback } from "react";
+import { useMemo } from "react";
 
 export const CartList = (props) => {
 	const { orderedItems } = props;
@@ -18,14 +18,21 @@ export const CartList = (props) => {
 		removeOrderedItem,
 	} = useContext(ShopContext);
 
-	const itemsQtv = orderedItems.reduce((acc, item) => acc + item.quantity, 0);
+	const totalItemsQts = useMemo(
+		(orderedItems) => {
+			return orderedItems.reduce((acc, item) => acc + item.quantity, 0);
+		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[orderedItems]
+	);
 
-	const totalPrice = useCallback(
+	const totalPrice = useMemo(
 		(orderedItems) => {
 			let sum = 0;
 			orderedItems.forEach((item) => (sum += item.price * item.quantity));
 			return sum;
 		},
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		[orderedItems]
 	);
 
@@ -57,7 +64,7 @@ export const CartList = (props) => {
 			>
 				<Typography>
 					Subtotal{" "}
-					{`(${itemsQtv} items): ${totalPrice(orderedItems)}€`}
+					{`(${totalItemsQts} items): ${totalPrice(orderedItems)}€`}
 				</Typography>
 				<Button
 					onClick={onOrderButtonHandler}
